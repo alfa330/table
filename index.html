@@ -281,12 +281,14 @@
                 }
             }, [loggedIn]);
             useEffect(() => {
-                const interval = setInterval(() => {
-                    fetchActiveChatters();
-                    fetchActiveModerators();
-                }, 5000);
-                return () => clearInterval(interval);
-            }, []);
+                if (loggedIn) {
+                    const interval = setInterval(() => {
+                        fetchActiveChatters();
+                        fetchActiveModerators();
+                    }, 5000);
+                    return () => clearInterval(interval);
+                }
+            }, [loggedIn]);
             useEffect(() => {
                 // Create more stars (increased to 200 for better coverage)
                 const starsContainer = document.querySelector('.stars');
