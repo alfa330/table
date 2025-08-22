@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Users Dashboard</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Arial Black', Arial, sans-serif;
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            justify-content: space-around;
+            height: 100vh;
+            align-items: center;
+        }
+        .column {
+            width: 45%;
+            text-align: center;
+            border: 2px solid #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .column h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            margin: 15px 0;
+            font-size: 20px;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+        .user-list li:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+        /* Stars animation */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-200vw, 200vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            width: 350px;
+            text-align: center;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+        }
+        .login-container:hover {
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+        }
+        .login-container h2 {
+            margin-bottom: 25px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px #000;
+        }
+        .login-container input {
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+        }
+        .login-container input:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+        }
+        .login-container button {
+            width: auto;
+            padding: 12px 24px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: block;
+            margin: 0 auto;
+        }
+        .login-container button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .login-container button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .user-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            z-index: 100;
+        }
+        .user-info span {
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px #000;
+        }
+        .user-info button {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .user-info button:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        button.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <div class="stars"></div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const API_BASE_URL = 'https://otp-2-fos4.onrender.com';
+        const App = () => {
+            const [activeChatters, setActiveChatters] = useState([]);
+            const [activeModerators, setActiveModerators] = useState([]);
+            const [loggedIn, setLoggedIn] = useState(false);
+            const [userData, setUserData] = useState(null);
+            const [loginValue, setLoginValue] = useState('');
+            const [passwordValue, setPasswordValue] = useState('');
+            const [isLoggingIn, setIsLoggingIn] = useState(false);
+            const handleLogin = async () => {
+                setIsLoggingIn(true);
+                try {
+                    const response = await axios.post(`${API_BASE_URL}/api/login`, {
+                        login: loginValue,
+                        password: passwordValue
+                    });
+                    const data = response.data;
+                    if (data.status === 'success') {
+                        setUserData(data);
+                        setLoggedIn(true);
+                        localStorage.setItem('userData', JSON.stringify(data));
+                    }
+                } catch (e) {
+                    console.error('Error during login:', e);
+                } finally {
+                    setIsLoggingIn(false);
+                }
+            };
+            const handleLogout = () => {
+                setLoggedIn(false);
+                setUserData(null);
+                localStorage.removeItem('userData');
+            };
+            const fetchActiveChatters = async () => {
+                if (!userData) return;
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_chatters`, {
+                        headers: {
+                            'X-API-Key': userData.apiKey,
+                            'X-User-Id': userData.id
+                        }
+                    });
+                    const data = response.data;
+                    if (data.status === 'success') {
+                        setActiveChatters(data.chatters || []);
+                    }
+                } catch (e) {
+                    console.error('Error fetching active chatters:', e);
+                }
+            };
+            const fetchActiveModerators = async () => {
+                if (!userData) return;
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_operators`, {
+                        headers: {
+                            'X-API-Key': userData.apiKey,
+                            'X-User-Id': userData.id
+                        }
+                    });
+                    const data = response.data;
+                    if (data.status === 'success') {
+                        setActiveModerators(data.operators);
+                        if (userData && userData.role === 'operator') {
+                            const isActive = data.operators.some(op => op.name === userData.name);
+                            console.log('User is active:', isActive);
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error fetching active moderators:', e);
+                }
+            };
+            useEffect(() => {
+                const storedUser = localStorage.getItem('userData');
+                if (storedUser) {
+                    setUserData(JSON.parse(storedUser));
+                    setLoggedIn(true);
+                }
+            }, []);
+            useEffect(() => {
+                if (loggedIn) {
+                    fetchActiveChatters();
+                    fetchActiveModerators();
+                }
+            }, [loggedIn]);
+            useEffect(() => {
+                const interval = setInterval(() => {
+                    fetchActiveChatters();
+                    fetchActiveModerators();
+                }, 5000);
+                return () => clearInterval(interval);
+            }, []);
+            useEffect(() => {
+                // Create more stars (increased to 200 for better coverage)
+                const starsContainer = document.querySelector('.stars');
+                for (let i = 0; i < 200; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    const size = Math.random() * 4 + 2; // Sizes 2-6px
+                    star.style.width = `${size}px`;
+                    star.style.height = `${size}px`;
+                    star.style.top = `-${Math.random() * 100}vh`; // Start off-screen top
+                    star.style.right = `-${Math.random() * 200}vw`; // Start off-screen right, extended range
+                    star.style.animationDuration = `30s`; // Fixed slower speed
+                    star.style.animationDelay = `${Math.random() * -30}s`; // Negative delay for immediate scattering
+                    starsContainer.appendChild(star);
+                }
+            }, []);
+            if (!loggedIn) {
+                return (
+                    <div className="login-container">
+                        <h2>Вход в аккаунт</h2>
+                        <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} placeholder="Логин" />
+                        <input type="password" value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} placeholder="Пароль" />
+                        <button onClick={handleLogin} disabled={isLoggingIn}>
+                            {isLoggingIn ? <div className="loader"></div> : 'Войти'}
+                        </button>
+                    </div>
+                );
+            }
+            return (
+                <>
+                    <div className="user-info">
+                        <button onClick={handleLogout}>Выйти</button>
+                    </div>
+                    <div className="container">
+                        <div className="column">
+                            <h2>Online Chatters</h2>
+                            <ul className="user-list">
+                                {activeChatters.map((chatter, index) => (
+                                    <li key={index}>{chatter.name}</li>
+                                ))}
+                                {activeChatters.length === 0 && <li>No active chatters</li>}
+                            </ul>
+                        </div>
+                        <div className="column">
+                            <h2>Online Moderators</h2>
+                            <ul className="user-list">
+                                {activeModerators.map((mod, index) => (
+                                    <li key={index}>{mod.name}</li>
+                                ))}
+                                {activeModerators.length === 0 && <li>No active moderators</li>}
+                            </ul>
+                        </div>
+                    </div>
+                </>
+            );
+        };
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
