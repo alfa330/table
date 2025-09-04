@@ -374,6 +374,7 @@
                     const data = response.data;
                     if (data.status === 'success') {
                         setActiveModerators(data.operators.map(op => ({  ...op,  name: op.name.split(" ").slice(0, 2).join(" ") })));
+                    }
                 } catch (e) {
                     console.error('Error fetching active moderators:', e);
                 }
