@@ -34,7 +34,7 @@
         }
         .column h2 {
             margin-bottom: 20px;
-            font-size: 46px; /* чуть крупнее */
+            font-size: 30px; /* чуть крупнее */
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -46,7 +46,7 @@
         }
         .user-list li {
             margin: 15px 0;
-            font-size: 38px; /* крупный текст */
+            font-size: 24px; /* крупный текст */
             padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
@@ -82,7 +82,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.7);
             padding: 50px;
             border-radius: 20px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
@@ -101,8 +101,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.35);
-            color: #1E90FF;
+            color: #fff;
         }
         .login-container input {
             width: 100%;
@@ -220,7 +219,7 @@
                         password: passwordValue
                     });
                     const data = response.data;
-                    if (data.status === 'success') {
+                    if (data.status === 'success' && data.role === 'admin') {
                         setUserData(data);
                         setLoggedIn(true);
                         localStorage.setItem('userData', JSON.stringify(data));
