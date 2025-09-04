@@ -17,9 +17,10 @@
         }
         .container {
             display: flex;
-            justify-content: space-around;
+            justify-content: center; /* Центрируем по горизонтали */
+            align-items: center;     /* Центрируем по вертикали */
+            gap: 40px;               /* Расстояние между колонками */
             height: 100vh;
-            align-items: center;
             z-index: 1;
             position: relative;
         }
@@ -34,7 +35,7 @@
         }
         .column h2 {
             margin-bottom: 20px;
-            font-size: 30px; /* чуть крупнее */
+            font-size: 34px; /* чуть крупнее */
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 2px;
@@ -46,7 +47,7 @@
         }
         .user-list li {
             margin: 15px 0;
-            font-size: 24px; /* крупный текст */
+            font-size: 28px; /* крупный текст */
             padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
