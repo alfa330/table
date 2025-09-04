@@ -356,7 +356,7 @@
                     });
                     const data = response.data;
                     if (data.status === 'success') {
-                        setActiveChatters(data.operators || []);
+                        setActiveChatters(data.operators.map(op => ({  ...op,  name: op.name.split(" ").slice(0, 2).join(" ") })));
                     }
                 } catch (e) {
                     console.error('Error fetching active operators for Чат менеджер:', e);
@@ -373,12 +373,7 @@
                     });
                     const data = response.data;
                     if (data.status === 'success') {
-                        setActiveModerators(data.operators);
-                        if (userData && userData.role === 'operator') {
-                            const isActive = data.operators.some(op => op.name === userData.name.split(" ").slice(0, 2).join(" "));
-                            console.log('User is active:', isActive);
-                        }
-                    }
+                        setActiveModerators(data.operators.map(op => ({  ...op,  name: op.name.split(" ").slice(0, 2).join(" ") })));
                 } catch (e) {
                     console.error('Error fetching active moderators:', e);
                 }
