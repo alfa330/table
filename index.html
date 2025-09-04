@@ -232,7 +232,7 @@
             const fetchActiveChatters = async () => {
                 if (!userData) return;
                 try {
-                    const response = await axios.get(`${API_BASE_URL}/api/active_chatters`, {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Чат менеджер`, {
                         headers: {
                             'X-API-Key': userData.apiKey,
                             'X-User-Id': userData.id
@@ -240,16 +240,16 @@
                     });
                     const data = response.data;
                     if (data.status === 'success') {
-                        setActiveChatters(data.chatters || []);
+                        setActiveChatters(data.operators || []);
                     }
                 } catch (e) {
-                    console.error('Error fetching active chatters:', e);
+                    console.error('Error fetching active operators for Чат менеджер:', e);
                 }
             };
             const fetchActiveModerators = async () => {
                 if (!userData) return;
                 try {
-                    const response = await axios.get(`${API_BASE_URL}/api/active_operators`, {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Модератор`, {
                         headers: {
                             'X-API-Key': userData.apiKey,
                             'X-User-Id': userData.id
