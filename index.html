@@ -331,6 +331,8 @@
                         setUserData(data);
                         setLoggedIn(true);
                         localStorage.setItem('userData', JSON.stringify(data));
+                    } else {
+                        
                     }
                 } catch (e) {
                     console.error('Error during login:', e);
@@ -373,7 +375,7 @@
                     if (data.status === 'success') {
                         setActiveModerators(data.operators);
                         if (userData && userData.role === 'operator') {
-                            const isActive = data.operators.some(op => op.name === userData.name);
+                            const isActive = data.operators.some(op => op.name === userData.name.split(" ").slice(0, 2).join(" "));
                             console.log('User is active:', isActive);
                         }
                     }
