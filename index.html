@@ -8,9 +8,9 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #000;
+            background-color: #87CEEB; /* Sky blue background */
             color: #fff;
-            font-family: 'Arial Black', Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             overflow: hidden;
         }
         .container {
@@ -18,6 +18,8 @@
             justify-content: space-around;
             height: 100vh;
             align-items: center;
+            z-index: 1;
+            position: relative;
         }
         .column {
             width: 45%;
@@ -25,15 +27,16 @@
             border: 2px solid #fff;
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent white */
         }
         .column h2 {
             margin-bottom: 20px;
             font-size: 28px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px #000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #1E90FF; /* Dodger blue for headers */
         }
         .user-list {
             list-style: none;
@@ -41,40 +44,39 @@
         }
         .user-list li {
             margin: 15px 0;
-            font-size: 20px;
+            font-size: 24px; /* Increased font size for names */
             padding: 10px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
+            color: #fff;
         }
         .user-list li:hover {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
         }
-        /* Stars animation */
-        .stars {
+        /* Clouds animation */
+        .clouds {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: 0;
         }
-        .star {
+        .cloud {
             position: absolute;
-            background: #fff;
-            border-radius: 50%;
-            opacity: 0.8;
-            animation: fall linear infinite;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            opacity: 0.7;
+            animation: drift linear infinite;
         }
-        @keyframes fall {
+        @keyframes drift {
             0% {
-                transform: translate(0, 0) rotate(0deg);
-                opacity: 1;
+                transform: translateX(-100vw);
             }
             100% {
-                transform: translate(-200vw, 200vh) rotate(360deg);
-                opacity: 0;
+                transform: translateX(100vw);
             }
         }
         .login-container {
@@ -82,35 +84,37 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             width: 350px;
             text-align: center;
             border: 2px solid #fff;
             transition: all 0.3s ease;
+            z-index: 2;
         }
         .login-container:hover {
-            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
         }
         .login-container h2 {
             margin-bottom: 25px;
             font-size: 28px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 2px 2px 4px #000;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #1E90FF; /* Dodger blue for header */
         }
         .login-container input {
             width: 100%;
             margin-bottom: 20px;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             border: none;
             border-radius: 10px;
             color: #fff;
             font-size: 16px;
-            box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
         }
         .login-container input:focus {
             outline: none;
@@ -119,7 +123,7 @@
         .login-container button {
             width: auto;
             padding: 12px 24px;
-            background: rgba(255, 255, 255, 0.3);
+            background: #1E90FF; /* Dodger blue for button */
             color: #fff;
             border: none;
             border-radius: 10px;
@@ -130,7 +134,7 @@
             margin: 0 auto;
         }
         .login-container button:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: #4682B4; /* Steel blue on hover */
         }
         .login-container button:disabled {
             opacity: 0.6;
@@ -143,20 +147,21 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             padding: 10px 15px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             z-index: 100;
         }
         .user-info span {
             font-weight: bold;
             font-size: 18px;
-            text-shadow: 1px 1px 2px #000;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            color: #fff;
         }
         .user-info button {
             padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.3);
+            background: #1E90FF; /* Dodger blue for button */
             color: #fff;
             border: none;
             border-radius: 8px;
@@ -164,7 +169,7 @@
             transition: background 0.3s;
         }
         .user-info button:hover {
-            background: rgba(255, 255, 255, 0.5);
+            background: #4682B4; /* Steel blue on hover */
         }
         .loader {
             border: 4px solid rgba(255, 255, 255, 0.3);
@@ -189,7 +194,7 @@
 </head>
 <body>
     <div id="root"></div>
-    <div class="stars"></div>
+    <div class="clouds"></div>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -290,19 +295,19 @@
                 }
             }, [loggedIn]);
             useEffect(() => {
-                // Create more stars (increased to 200 for better coverage)
-                const starsContainer = document.querySelector('.stars');
-                for (let i = 0; i < 200; i++) {
-                    const star = document.createElement('div');
-                    star.className = 'star';
-                    const size = Math.random() * 4 + 2; // Sizes 2-6px
-                    star.style.width = `${size}px`;
-                    star.style.height = `${size}px`;
-                    star.style.top = `-${Math.random() * 100}vh`; // Start off-screen top
-                    star.style.right = `-${Math.random() * 200}vw`; // Start off-screen right, extended range
-                    star.style.animationDuration = `30s`; // Fixed slower speed
-                    star.style.animationDelay = `${Math.random() * -30}s`; // Negative delay for immediate scattering
-                    starsContainer.appendChild(star);
+                // Create clouds
+                const cloudsContainer = document.querySelector('.clouds');
+                for (let i = 0; i < 10; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    const size = Math.random() * 100 + 50; // Sizes 50-150px
+                    cloud.style.width = `${size}px`;
+                    cloud.style.height = `${size / 2}px`;
+                    cloud.style.top = `${Math.random() * 80}vh`; // Random vertical position
+                    cloud.style.left = `${Math.random() * 100}vw`; // Random start position
+                    cloud.style.animationDuration = `${Math.random() * 20 + 20}s`; // 20-40s duration
+                    cloud.style.animationDelay = `${Math.random() * -20}s`; // Negative delay for immediate movement
+                    cloudsContainer.appendChild(cloud);
                 }
             }, []);
             if (!loggedIn) {
