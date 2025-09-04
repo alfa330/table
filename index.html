@@ -248,12 +248,21 @@
         @keyframes fly-up {
           0% {
             transform: translateY(0) translateX(0) rotate(0deg);
+            opacity: 0.75; /* появляется полупрозрачным */
+          }
+          10% {
+            opacity: 0.75; /* фиксируем прозрачность */
           }
           50% {
             transform: translateY(-50vh) translateX(15px) rotate(2deg);
+            opacity: 0.75;
+          }
+          90% {
+            opacity: 0.75; /* держим до конца почти без изменений */
           }
           100% {
-            transform: translateY(-110vh) translateX(-15px) rotate(-2deg);
+            transform: translateY(-150vh) translateX(-15px) rotate(-2deg); /* улетел за экран */
+            opacity: 0; /* плавное исчезновение */
           }
         }
     </style>
