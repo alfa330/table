@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Users Dashboard</title>
     <style>
+        
         body {
             margin: 0;
             padding: 0;
@@ -26,46 +27,34 @@
             text-align: center;
             border: 2px solid #fff;
             border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
-            background-color: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+            background-color: rgba(30, 30, 30, 0.7); /* тёмно-серый фон */
         }
         .column h2 {
-            margin-bottom: 25px;
-            font-size: 34px;
-            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 46px; /* чуть крупнее */
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.35);
-            color: #1E90FF;
-        }
+            letter-spacing: 2px;
+            color: #fff; /* белый */    
+        }        
         .user-list {
             list-style: none;
             padding: 0;
         }
         .user-list li {
             margin: 15px 0;
-            font-size: 28px; /* крупный текст */
+            font-size: 38px; /* крупный текст */
             font-weight: bold;
             padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             transition: all 0.3s ease;
-            color: #00FFFF; /* неоновый голубой */
-            text-shadow: 
-                0 0 5px #00FFFF,
-                0 0 10px #00FFFF,
-                0 0 20px #00CED1,
-                0 0 40px #1E90FF; /* эффект glow */
+            color: #fff; /* белый текст */
             letter-spacing: 1px;
         }
         .user-list li:hover {
-            transform: scale(1.1);
-            color: #7CFC00; /* лаймово-зелёный при наведении */
-            text-shadow: 
-                0 0 8px #7CFC00,
-                0 0 15px #32CD32,
-                0 0 30px #00FF00,
-                0 0 50px #ADFF2F;
+            background-color: rgba(255, 255, 255, 0.1);
         }
         /* Clouds animation */
         .clouds {
