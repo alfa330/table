@@ -247,9 +247,9 @@
         /* общий контейнер */
         .ad-board {
           position: fixed;
-          bottom: 40px;              /* чуть выше низа экрана */
+          bottom: 20px;                /* опустил ближе к низу */
           left: 50%;
-          transform: translateX(-50%); /* центрируем по горизонтали */
+          transform: translateX(-50%);
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -257,42 +257,43 @@
         }
         
         /* щит */
+        /* сам щит */
         .ad-board .board {
-            width: 400px;     /* увеличил */
-            height: 220px;    /* увеличил */
-            background: #fff;
-            border: 4px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0;   /* убрал отступ, чтобы столб входил внутрь */
-            overflow: hidden;
-            position: relative;
-            z-index: 2; /* поверх столба */
+          width: 450px;                /* увеличил ширину */
+          height: 260px;               /* увеличил высоту */
+          background: #fff;
+          border: 4px solid #ccc;
+          border-radius: 8px;
+          box-shadow: 0 6px 25px rgba(0,0,0,0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 0;
+          overflow: hidden;
+          position: relative;
+          z-index: 2;
         }
         
-        /* картинка внутри щита */
+        /* фото внутри щита чуть больше */
         .ad-board .board img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: 3px solid #aaa;
-            border-radius: 6px;
+          width: 105%;                  /* сделал чуть больше, чтобы заполнить */
+          height: 105%;
+          object-fit: cover;
+          border: 3px solid #aaa;
+          border-radius: 6px;
         }
         
         /* столб */
-.ad-board .pillar {
-    width: 40px;       /* сделал уже */
-    height: 220px;     /* оставил высоту под борд */
-    margin-top: -30px; /* входит в борд */
-    background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
-    border-radius: 8px;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.3),
-                0 3px 10px rgba(0,0,0,0.4);
-    z-index: 1; /* под бордом */
-}
+        .ad-board .pillar {
+            width: 40px;       /* сделал уже */
+            height: 220px;     /* оставил высоту под борд */
+            margin-top: -30px; /* входит в борд */
+            background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
+            border-radius: 8px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.3),
+                        0 3px 10px rgba(0,0,0,0.4);
+            z-index: 1; /* под бордом */
+        }
 
     
         /* --- Шарики разноцветные --- */
