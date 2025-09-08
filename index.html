@@ -1,358 +1,515 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <title>Online Users Dashboard</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #87CEEB;
-      color: #fff;
-      font-family: 'Arial Black', Arial, sans-serif;
-      overflow: hidden;
-    }
-    * { box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Online Users Dashboard</title>
+    <style>
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #87CEEB; /* Sky blue background */
+            color: #fff;
+            font-family: 'Arial Black', Arial, sans-serif;
+            overflow: hidden;
+        }
+        * {
+          box-sizing: border-box;
+        }
+        
+        .container {
+          display: flex;
+          justify-content: center; /* центр по горизонтали */
+          align-items: center;     /* центр по вертикали */
+          gap: 32px;               /* расстояние между колонками */
+          width: 100%;
+          max-width: 1200px;       /* чтобы не растягивалось слишком широко */
+          margin: 0 auto;          /* центрируем сам контейнер в окне */
+          height: 100vh;
+          position: relative;
+          z-index: 1;
+          padding: 20px;
+        }
+        
+        /* 3) колонки — используем flex-basis (гарантия, что суммарно не выйдет за 100%) */
+        .column {
+          flex: 0 1 calc(50% - 16px); /* половина ширины минус половина gap */
+          min-width: 260px;           /* чтобы на маленьких экранах они не становились крошечными */
+          text-align: center;
+          border: 2px solid #fff;
+          border-radius: 15px;
+          padding: 20px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+          background-color: rgba(30, 30, 30, 0.7);
+        }
+        .column h2 {
+            margin-bottom: 20px;
+            font-size: 34px; /* чуть крупнее */
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff; /* белый */    
+        }        
+        .user-list {
+            list-style: none;
+            padding: 0;
+        }
+        .user-list li {
+            margin: 15px 0;
+            font-size: 28px; /* крупный текст */
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            color: #fff; /* белый текст */
+            letter-spacing: 1px;
+        }
+        .user-list li:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        /* Clouds animation */
+        .clouds {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .cloud {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50px;
+            opacity: 0.7;
+            animation: drift linear infinite;
+        }
+        @keyframes drift {
+            0% { transform: translateX(-100vw); }
+            100% { transform: translateX(100vw); }
+        }
+        .login-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.7);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            width: 380px;
+            text-align: center;
+            border: 2px solid #fff;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+        .login-container:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.35);
+        }
+        .login-container h2 {
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+        .login-container input {
+            width: 100%;
+            margin-bottom: 22px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 12px;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        }
+        .login-container input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        }
+        .login-container button {
+            padding: 14px 28px;
+            background: #1E90FF;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .login-container button:hover {
+            background: #4682B4;
+            transform: scale(1.05);
+        }
+        .login-container button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .user-info {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 12px 18px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+            z-index: 100;
+        }
+        .user-info span {
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+        .user-info button {
+            padding: 10px 18px;
+            background: #1E90FF;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .user-info button:hover {
+            background: #4682B4;
+            transform: scale(1.05);
+        }
+        .loader {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-top: 5px solid #fff;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        button.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .balloon {
+          position: absolute;
+          bottom: -200px;
+          width: 120px;
+          height: 160px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          animation: fly-up linear forwards;
+          opacity: 0.75; /* постоянная прозрачность */
+        }
+        
+        /* сама колба (перевёрнутая капля, белая) */
+        .balloon .bubble {
+          width: 100px;
+          height: 130px;
+          border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%; 
+          background: #ffffff; /* белая колба */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          transform: rotate(180deg); /* переворот, чтобы сужение было снизу */
+          box-shadow: none; /* убрал тень */
+        }
+        
+        /* логотип внутри */
+        .balloon .bubble img {
+          width: 65%;
+          height: auto;
+          object-fit: contain;
+          transform: rotate(180deg); /* переворачиваем обратно */
+        }
+        
+        /* верёвочка */
+        .balloon .string {
+          width: 2px;
+          height: 50px;
+          background: #555;
+          margin-top: -5px;
+        }
 
-    .container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 32px;
-      width: 100%;
-      max-width: 1400px;
-      margin: 0 auto;
-      height: 100vh;
-      position: relative;
-      z-index: 1;
-      padding: 20px;
-    }
-
-    .column {
-      flex: 0 1 calc(50% - 16px);
-      min-width: 260px;
-      text-align: center;
-      border: 2px solid #fff;
-      border-radius: 15px;
-      padding: 20px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
-      background-color: rgba(30, 30, 30, 0.7);
-    }
-    .column h2 {
-      margin-bottom: 20px;
-      font-size: 34px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      color: #fff;
-    }
-    .user-list {
-      list-style: none;
-      padding: 0;
-    }
-    .user-list li {
-      margin: 15px 0;
-      font-size: 28px;
-      padding: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-      transition: all 0.3s ease;
-      color: #fff;
-      letter-spacing: 1px;
-    }
-    .user-list li:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    /* БИЛБОРД */
-    .billboard {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 400px;
-      height: 300px;
-      background: #111;
-      border: 6px solid #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.7);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      z-index: 5;
-    }
-    .billboard h1 {
-      font-size: 32px;
-      font-weight: bold;
-      color: #FFD700;
-      text-align: center;
-      margin: 15px 0;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-    }
-    .billboard img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-      border-top: 3px solid #fff;
-    }
-
-    /* Clouds */
-    .clouds {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .cloud {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.8);
-      border-radius: 50px;
-      opacity: 0.7;
-      animation: drift linear infinite;
-    }
-    @keyframes drift {
-      0% { transform: translateX(-100vw); }
-      100% { transform: translateX(100vw); }
-    }
-
-    /* ШАРИКИ */
-    .balloon {
-      position: absolute;
-      bottom: -200px;
-      width: 120px;
-      height: 160px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      animation: fly-up linear forwards;
-      opacity: 0.85;
-    }
-    .balloon .bubble {
-      width: 100px;
-      height: 130px;
-      border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%;
-      background: red; /* будет меняться */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      transform: rotate(180deg);
-    }
-    .balloon .string {
-      width: 2px;
-      height: 50px;
-      background: #555;
-      margin-top: -5px;
-    }
-    @keyframes fly-up {
-      0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.85; }
-      100% { transform: translateY(-150vh) translateX(-15px) rotate(-2deg); opacity: 0; }
-    }
-  </style>
-</head>
-<body>
-  <div id="root"></div>
-  <div class="clouds"></div>
-  <div class="clouds"></div>
-  <div class="balloons"></div>
-  <div class="billboard">
-    <h1>С Днем Рождения!</h1>
-    <img src="https://iili.io/KobqT5F.th.jpg" alt="Birthday">
-  </div>
-
-  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/babel">
-      const { useState, useEffect } = React;
-      const API_BASE_URL = 'https://otp-2-fos4.onrender.com';
-    
-      const App = () => {
-        const [activeChatters, setActiveChatters] = useState([]);
-        const [activeModerators, setActiveModerators] = useState([]);
-        const [loggedIn, setLoggedIn] = useState(false);
-        const [userData, setUserData] = useState(null);
-        const [loginValue, setLoginValue] = useState('');
-        const [passwordValue, setPasswordValue] = useState('');
-        const [isLoggingIn, setIsLoggingIn] = useState(false);
-    
-        // 🎈 разноцветные шарики
-        useEffect(() => {
-          const colors = ["#FF4500", "#32CD32", "#1E90FF", "#FFD700", "#FF69B4", "#BA55D3"];
-          const balloonsContainer = document.querySelector('.balloons');
-          let timeout;
-    
-          const spawnBalloon = () => {
-            const balloon = document.createElement('div');
-            balloon.className = 'balloon';
-            balloon.style.left = `${Math.random() * 90}vw`; 
-            balloon.style.animationDuration = `${Math.random() * 10 + 15}s`; 
-            const color = colors[Math.floor(Math.random() * colors.length)];
-    
-            balloon.innerHTML = `
-              <div class="bubble" style="background:${color}"></div>
-              <div class="string"></div>
-            `;
-            balloonsContainer.appendChild(balloon);
-            setTimeout(() => balloon.remove(), 25000);
-    
-            const delay = Math.random() * 15000 + 8000;
-            timeout = setTimeout(spawnBalloon, delay);
-          };
-    
-          spawnBalloon();
-          return () => clearTimeout(timeout);
-        }, []);
-    
-        // ====== ЛОГИН ======
-        const handleLogin = async () => {
-          setIsLoggingIn(true);
-          try {
-            const response = await axios.post(`${API_BASE_URL}/api/login`, {
-              login: loginValue,
-              password: passwordValue
-            });
-            const data = response.data;
-            if (data.status === 'success' && data.role === 'admin') {
-              setUserData(data);
-              setLoggedIn(true);
-              localStorage.setItem('userData', JSON.stringify(data));
-            }
-          } catch (e) {
-            console.error('Error during login:', e);
-          } finally {
-            setIsLoggingIn(false);
-          }
-        };
-    
-        const handleLogout = () => {
-          setLoggedIn(false);
-          setUserData(null);
-          localStorage.removeItem('userData');
-        };
-    
-        // ====== FETCH ACTIVE USERS ======
-        const fetchActiveChatters = async () => {
-          if (!userData) return;
-          try {
-            const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Чат менеджер`, {
-              headers: {
-                'X-API-Key': userData.apiKey,
-                'X-User-Id': userData.id
-              }
-            });
-            const data = response.data;
-            if (data.status === 'success') {
-              setActiveChatters(data.operators.map(op => ({ 
-                ...op, 
-                name: op.name.split(" ").slice(0, 2).join(" ") 
-              })));
-            }
-          } catch (e) {
-            console.error('Error fetching active operators for Чат менеджер:', e);
-          }
-        };
-    
-        const fetchActiveModerators = async () => {
-          if (!userData) return;
-          try {
-            const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Модератор`, {
-              headers: {
-                'X-API-Key': userData.apiKey,
-                'X-User-Id': userData.id
-              }
-            });
-            const data = response.data;
-            if (data.status === 'success') {
-              setActiveModerators(data.operators.map(op => ({ 
-                ...op, 
-                name: op.name.split(" ").slice(0, 2).join(" ") 
-              })));
-            }
-          } catch (e) {
-            console.error('Error fetching active moderators:', e);
-          }
-        };
-    
-        // ====== AUTO LOGIN FROM LOCALSTORAGE ======
-        useEffect(() => {
-          const storedUser = localStorage.getItem('userData');
-          if (storedUser) {
-            setUserData(JSON.parse(storedUser));
-            setLoggedIn(true);
-          }
-        }, []);
-    
-        // ====== ПЕРВЫЙ FETCH ======
-        useEffect(() => {
-          if (loggedIn) {
-            fetchActiveChatters();
-            fetchActiveModerators();
-          }
-        }, [loggedIn]);
-    
-        // ====== ПЕРИОДИЧЕСКИЙ FETCH ======
-        useEffect(() => {
-          if (loggedIn) {
-            const interval = setInterval(() => {
-              fetchActiveChatters();
-              fetchActiveModerators();
-            }, 5000);
-            return () => clearInterval(interval);
-          }
-        }, [loggedIn]);
-    
-        if (!loggedIn) {
-          return (
-            <div className="login-container">
-              <h2>Вход в аккаунт</h2>
-              <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} placeholder="Логин" />
-              <input type="password" value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} placeholder="Пароль" />
-              <button onClick={handleLogin} disabled={isLoggingIn}>
-                {isLoggingIn ? <div className="loader"></div> : 'Войти'}
-              </button>
-            </div>
-          );
+        .ad-pillar {
+            position: fixed;
+            bottom: 0;
+            left: 20px;
+            width: 160px;
+            height: 400px;
+            background: #fff;
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            z-index: 5;
+        }
+        .ad-pillar img {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
         }
     
-        return (
-          <>
-            <div className="user-info">
-              <button onClick={handleLogout}>Выйти</button>
-            </div>
+        /* --- Новое: надпись сверху --- */
+        .birthday-banner {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 48px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
     
-            <div className="container">
-              <div className="column">
-                <h2>Online Chatters</h2>
-                <ul className="user-list">
-                  {activeChatters.map((chatter, index) => (
-                    <li key={index}>{chatter.name}</li>
-                  ))}
-                  {activeChatters.length === 0 && <li>No active chatters</li>}
-                </ul>
-              </div>
-              <div className="column">
-                <h2>Online Moderators</h2>
-                <ul className="user-list">
-                  {activeModerators.map((mod, index) => (
-                    <li key={index}>{mod.name}</li>
-                  ))}
-                  {activeModerators.length === 0 && <li>No active moderators</li>}
-                </ul>
-              </div>
-            </div>
-          </>
-        );
-      };
-    
-      ReactDOM.render(<App />, document.getElementById('root'));
+        /* --- Шарики разноцветные --- */
+        .balloon .bubble {
+            background: transparent !important; /* убираем белый фон */
+        }
+        .balloon .bubble::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%;
+            background: var(--balloon-color, #ff0000); /* цвет по умолчанию */
+            z-index: -1;
+        }
+        
+        @keyframes fly-up {
+          0% {
+            transform: translateY(0) translateX(0) rotate(0deg);
+            opacity: 0.75; /* появляется полупрозрачным */
+          }
+          10% {
+            opacity: 0.75; /* фиксируем прозрачность */
+          }
+          50% {
+            transform: translateY(-50vh) translateX(15px) rotate(2deg);
+            opacity: 0.75;
+          }
+          90% {
+            opacity: 0.75; /* держим до конца почти без изменений */
+          }
+          100% {
+            transform: translateY(-150vh) translateX(-15px) rotate(-2deg); /* улетел за экран */
+            opacity: 0; /* плавное исчезновение */
+          }
+        }
+    </style>
+</head>
+<body>
+    <div class="birthday-banner">С Днём Рождения!</div>
+    <div id="root"></div>
+    <div class="clouds"></div>
+    <div class="clouds"></div>
+    <div class="balloons"></div>
+
+    <div class="ad-pillar">
+      <img src="https://iili.io/KobqT5F.th.jpg" alt="Ad Image"/>
+    </div>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const API_BASE_URL = 'https://otp-2-fos4.onrender.com';
+        const App = () => {
+            const [activeChatters, setActiveChatters] = useState([]);
+            const [activeModerators, setActiveModerators] = useState([]);
+            const [loggedIn, setLoggedIn] = useState(false);
+            const [userData, setUserData] = useState(null);
+            const [loginValue, setLoginValue] = useState('');
+            const [passwordValue, setPasswordValue] = useState('');
+            const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+            useEffect(() => {
+              const balloonsContainer = document.querySelector('.balloons');
+              let timeout;
+            
+            const colors = ["#FF6347", "#FFD700", "#32CD32", "#1E90FF", "#FF69B4", "#8A2BE2"];
+            const spawnBalloon = () => {
+              const balloon = document.createElement('div');
+              balloon.className = 'balloon';
+              balloon.style.left = `${Math.random() * 90}vw`; 
+              balloon.style.animationDuration = `${Math.random() * 10 + 15}s`; 
+              const color = colors[Math.floor(Math.random() * colors.length)];
+              balloon.style.setProperty('--balloon-color', color);
+            
+              balloon.innerHTML = `
+                <div class="bubble">
+                  <img src="https://iili.io/KfNE2qv.png" alt="Balloon Logo" />
+                </div>
+                <div class="string"></div>
+              `;
+              balloonsContainer.appendChild(balloon);
+              setTimeout(() => balloon.remove(), 25000);
+              const delay = Math.random() * 10000 + 15000;
+              timeout = setTimeout(spawnBalloon, delay);
+            };
+            
+              spawnBalloon(); // запустить первый шарик
+            
+              return () => clearTimeout(timeout);
+            }, []);
+            
+            const handleLogin = async () => {
+                setIsLoggingIn(true);
+                try {
+                    const response = await axios.post(`${API_BASE_URL}/api/login`, {
+                        login: loginValue,
+                        password: passwordValue
+                    });
+                    const data = response.data;
+                    if (data.status === 'success' && data.role === 'admin') {
+                        setUserData(data);
+                        setLoggedIn(true);
+                        localStorage.setItem('userData', JSON.stringify(data));
+                    } else {
+                        
+                    }
+                } catch (e) {
+                    console.error('Error during login:', e);
+                } finally {
+                    setIsLoggingIn(false);
+                }
+            };
+            const handleLogout = () => {
+                setLoggedIn(false);
+                setUserData(null);
+                localStorage.removeItem('userData');
+            };
+            const fetchActiveChatters = async () => {
+                if (!userData) return;
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Чат менеджер`, {
+                        headers: {
+                            'X-API-Key': userData.apiKey,
+                            'X-User-Id': userData.id
+                        }
+                    });
+                    const data = response.data;
+                    if (data.status === 'success') {
+                        setActiveChatters(data.operators.map(op => ({  ...op,  name: op.name.split(" ").slice(0, 2).join(" ") })));
+                    }
+                } catch (e) {
+                    console.error('Error fetching active operators for Чат менеджер:', e);
+                }
+            };
+            const fetchActiveModerators = async () => {
+                if (!userData) return;
+                try {
+                    const response = await axios.get(`${API_BASE_URL}/api/active_operators?direction=Модератор`, {
+                        headers: {
+                            'X-API-Key': userData.apiKey,
+                            'X-User-Id': userData.id
+                        }
+                    });
+                    const data = response.data;
+                    if (data.status === 'success') {
+                        setActiveModerators(data.operators.map(op => ({  ...op,  name: op.name.split(" ").slice(0, 2).join(" ") })));
+                    }
+                } catch (e) {
+                    console.error('Error fetching active moderators:', e);
+                }
+            };
+            useEffect(() => {
+                const storedUser = localStorage.getItem('userData');
+                if (storedUser) {
+                    setUserData(JSON.parse(storedUser));
+                    setLoggedIn(true);
+                }
+            }, []);
+            useEffect(() => {
+                if (loggedIn) {
+                    fetchActiveChatters();
+                    fetchActiveModerators();
+                }
+            }, [loggedIn]);
+            useEffect(() => {
+                if (loggedIn) {
+                    const interval = setInterval(() => {
+                        fetchActiveChatters();
+                        fetchActiveModerators();
+                    }, 5000);
+                    return () => clearInterval(interval);
+                }
+            }, [loggedIn]);
+            useEffect(() => {
+                // Create clouds
+                const cloudsContainer = document.querySelector('.clouds');
+                for (let i = 0; i < 10; i++) {
+                    const cloud = document.createElement('div');
+                    cloud.className = 'cloud';
+                    const size = Math.random() * 100 + 50; // Sizes 50-150px
+                    cloud.style.width = `${size}px`;
+                    cloud.style.height = `${size / 2}px`;
+                    cloud.style.top = `${Math.random() * 80}vh`; // Random vertical position
+                    cloud.style.left = `${Math.random() * 100}vw`; // Random start position
+                    cloud.style.animationDuration = `${Math.random() * 20 + 20}s`; // 20-40s duration
+                    cloud.style.animationDelay = `${Math.random() * -20}s`; // Negative delay for immediate movement
+                    cloudsContainer.appendChild(cloud);
+                }
+            }, []);
+            if (!loggedIn) {
+                return (
+                    <div className="login-container">
+                        <h2>Вход в аккаунт</h2>
+                        <input type="text" value={loginValue} onChange={(e) => setLoginValue(e.target.value)} placeholder="Логин" />
+                        <input type="password" value={passwordValue} onChange={(e) => setPasswordValue(e.target.value)} placeholder="Пароль" />
+                        <button onClick={handleLogin} disabled={isLoggingIn}>
+                            {isLoggingIn ? <div className="loader"></div> : 'Войти'}
+                        </button>
+                    </div>
+                );
+            }
+            return (
+                <>
+                    <div className="user-info">
+                        <button onClick={handleLogout}>Выйти</button>
+                    </div>
+                    <div className="container">
+                        <div className="column">
+                            <h2>Online Chatters</h2>
+                            <ul className="user-list">
+                                {activeChatters.map((chatter, index) => (
+                                    <li key={index}>{chatter.name}</li>
+                                ))}
+                                {activeChatters.length === 0 && <li>No active chatters</li>}
+                            </ul>
+                        </div>
+                        <div className="column">
+                            <h2>Online Moderators</h2>
+                            <ul className="user-list">
+                                {activeModerators.map((mod, index) => (
+                                    <li key={index}>{mod.name}</li>
+                                ))}
+                                {activeModerators.length === 0 && <li>No active moderators</li>}
+                            </ul>
+                        </div>
+                    </div>
+                </>
+            );
+        };
+        ReactDOM.render(<App />, document.getElementById('root'));
     </script>
 </body>
 </html>
