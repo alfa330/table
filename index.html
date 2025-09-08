@@ -244,54 +244,52 @@
           margin-top: -5px;
         }
 
-        /* общий контейнер */
         .ad-board {
           position: fixed;
-          bottom: 0;                  /* у самого низа */
+          bottom: -40px;               /* чуть ниже экрана */
           left: 50%;
-          transform: translateX(-50%); /* центрируем */
+          transform: translateX(-50%);
           display: flex;
           flex-direction: column;
           align-items: center;
           z-index: 0;
         }
         
-        /* щит */
+        /* щит — увеличен */
         .ad-board .board {
-            width: 400px;     /* увеличил */
-            height: 220px;    /* увеличил */
-            background: #fff;
-            border: 4px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 6px 25px rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 0;   /* убрал отступ, чтобы столб входил внутрь */
-            overflow: hidden;
-            position: relative;
-            z-index: 2; /* поверх столба */
+          width: 500px;     /* шире */
+          height: 280px;    /* выше */
+          background: #fff;
+          border: 6px solid #ccc;
+          border-radius: 10px;
+          box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 0;
+          overflow: hidden;
+          position: relative;
+          z-index: 2;
         }
         
-        /* картинка внутри щита */
+        /* картинка внутри */
         .ad-board .board img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border: 3px solid #aaa;
-            border-radius: 6px;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border: 4px solid #aaa;
+          border-radius: 8px;
         }
         
-
-        /* столб теперь растягивается до низа */
+        /* столб — длиннее */
         .ad-board .pillar {
-          width: 40px;
-          flex-grow: 1;                /* растягивается */
-          min-height: 200px;           /* чтобы совсем не схлопывался */
+          width: 50px;        /* чуть толще */
+          height: 300px;      /* длиннее */
+          margin-top: -40px;  /* глубже заходит в борд */
           background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
-          border-radius: 8px;
-          box-shadow: inset 0 0 8px rgba(0,0,0,0.3),
-                      0 3px 10px rgba(0,0,0,0.4);
+          border-radius: 10px;
+          box-shadow: inset 0 0 10px rgba(0,0,0,0.3),
+                      0 5px 15px rgba(0,0,0,0.5);
           z-index: 1;
         }
 
