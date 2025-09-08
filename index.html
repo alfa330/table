@@ -244,54 +244,56 @@
           margin-top: -5px;
         }
 
-        .ad-board {
-          position: fixed;
-          bottom: -40px;               /* чуть ниже экрана */
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          z-index: 0;
-        }
-        
-        /* щит — увеличен */
-        .ad-board .board {
-          width: 500px;     /* шире */
-          height: 280px;    /* выше */
-          background: #fff;
-          border: 6px solid #ccc;
-          border-radius: 10px;
-          box-shadow: 0 8px 30px rgba(0,0,0,0.6);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-bottom: 0;
-          overflow: hidden;
-          position: relative;
-          z-index: 2;
-        }
-        
-        /* картинка внутри */
-        .ad-board .board img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border: 4px solid #aaa;
-          border-radius: 8px;
-        }
-        
-        /* столб — длиннее */
-        .ad-board .pillar {
-          width: 50px;        /* чуть толще */
-          height: 300px;      /* длиннее */
-          margin-top: -40px;  /* глубже заходит в борд */
-          background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
-          border-radius: 10px;
-          box-shadow: inset 0 0 10px rgba(0,0,0,0.3),
-                      0 5px 15px rgba(0,0,0,0.5);
-          z-index: 1;
-        }
+.ad-board {
+  position: fixed;
+  bottom: -190px; /* сделал ниже */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 0;
+}
+
+
+/* щит (борд) */
+.ad-board .board {
+  width: 520px;     /* шире */
+  height: 300px;    /* выше */
+  background: #fff;
+  border: 6px solid #ccc;
+  border-radius: 12px;
+  box-shadow: 0 8px 35px rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+}
+
+/* картинка внутри */
+.ad-board .board img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 4px solid #aaa;
+  border-radius: 10px;
+}
+
+/* столб */
+.ad-board .pillar {
+  width: 35px;        /* стал уже */
+  height: 320px;      /* чуть длиннее, чтобы достал до низа */
+  margin-top: -50px;  /* глубже уходит внутрь борда */
+  background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
+  border-radius: 8px;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.3),
+              0 5px 15px rgba(0,0,0,0.5);
+  z-index: 1;
+}
+
 
     
         /* --- Шарики разноцветные --- */
@@ -432,8 +434,8 @@
                 airship.style.top = `${Math.random() * 50 + 10}vh`;
                 // случайная длительность полета (20–40с)
                 airship.style.animationDuration = `${Math.random() * 20 + 20}s`;
-                const size = Math.random() * 200 + 350; // 350–550px
-                airship.style.width = `${size}px`;
+		const size = Math.random() * 300 + 600; // 600–900px
+		airship.style.width = `${size}px`;
                 airshipsContainer.appendChild(airship);
             
                 // удалить после полета
@@ -611,16 +613,16 @@ class Firework {
     this.createParticles();
   }
   createParticles() {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {   // больше частиц
       const angle = Math.random() * 2 * Math.PI;
-      const speed = Math.random() * 4 + 2;
+      const speed = Math.random() * 5 + 2; // чуть быстрее
       const color = this.colors[Math.floor(Math.random() * this.colors.length)];
       this.particles.push({
         x: this.x,
         y: this.y,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        life: 100,
+        life: 120,       // дольше живут
         color
       });
     }
@@ -629,7 +631,7 @@ class Firework {
     this.particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.05; // гравитация
+      p.vy += 0.04; // гравитация
       p.life--;
     });
     this.particles = this.particles.filter(p => p.life > 0);
@@ -637,9 +639,9 @@ class Firework {
   draw(ctx) {
     this.particles.forEach(p => {
       ctx.fillStyle = p.color;
-      ctx.globalAlpha = p.life / 100;
+      ctx.globalAlpha = Math.min(1, p.life / 80); // дольше ярче
       ctx.beginPath();
-      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); // точки крупнее
       ctx.fill();
     });
     ctx.globalAlpha = 1;
@@ -661,8 +663,9 @@ loop();
 // запускаем фейерверк каждые 2–4 секунды
 setInterval(() => {
   const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height * 0.5; // верхняя половина экрана
-  const colors = ["#ff4d4d", "#ffcc00", "#66ff66", "#66ccff", "#ff66cc"];
+  const y = Math.random() * canvas.height * 0.5;
+  // более контрастные неоновые цвета
+  const colors = ["#ff0000", "#ffff00", "#00ff00", "#00ccff", "#ff00ff", "#ffffff"];
   fireworks.push(new Firework(x, y, colors));
 }, 2000 + Math.random() * 2000);
 </script>
