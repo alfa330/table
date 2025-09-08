@@ -306,9 +306,8 @@
 
         .airship {
             position: absolute;
-            top: 0;
-            left: -300px; /* улетает с левой стороны */
-            width: 250px;
+            left: -400px; /* смещаем дальше за экран, т.к. ширина больше */
+            width: 400px; /* УВЕЛИЧИЛ РАЗМЕР дирижабля */
             height: auto;
             pointer-events: none;
             opacity: 0.9;
@@ -347,7 +346,6 @@
     </style>
 </head>
 <body>
-    <div class="birthday-banner">С Днём Рождения!</div>
     <div id="root"></div>
     <div class="clouds"></div>
     <div class="clouds"></div>
@@ -419,14 +417,15 @@
                 airship.style.top = `${Math.random() * 50 + 10}vh`;
                 // случайная длительность полета (20–40с)
                 airship.style.animationDuration = `${Math.random() * 20 + 20}s`;
-            
+                const size = Math.random() * 200 + 350; // 350–550px
+                airship.style.width = `${size}px`;
                 airshipsContainer.appendChild(airship);
             
                 // удалить после полета
                 setTimeout(() => airship.remove(), 45000);
             
                 // запускать снова через 30–70 секунд
-                const delay = Math.random() * 20000 + 20000;
+                const delay = Math.random() * 40000 + 30000;
                 timeout = setTimeout(spawnAirship, delay);
               };
             
