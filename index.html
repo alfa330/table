@@ -406,39 +406,35 @@
               return () => clearTimeout(timeout);
             }, []);
 
-        useEffect(() => {
-          const airshipsContainer = document.querySelector('.airships');
-          let timeout;
-        
-          const spawnAirship = () => {
-            const airship = document.createElement('img');
-            airship.src = "https://iili.io/KopRPJs.md.png"; // дирижабль
-            airship.className = "airship";
-        
-            // случайная высота (10vh–60vh)
-            airship.style.top = `${Math.random() * 50 + 10}vh`;
-            // случайная длительность полета (20–40с)
-            airship.style.animationDuration = `${Math.random() * 20 + 20}s`;
-        
-            airshipsContainer.appendChild(airship);
-        
-            // удалить после полета
-            setTimeout(() => airship.remove(), 45000);
-        
-            // запускать снова через 30–70 секунд
-            const delay = Math.random() * 20000 + 20000;
-            timeout = setTimeout(spawnAirship, delay);
-          };
-        
-          spawnAirship();
-        
-          return () => clearTimeout(timeout);
-        }, []);
+            useEffect(() => {
+              const airshipsContainer = document.querySelector('.airships');
+              let timeout;
+            
+              const spawnAirship = () => {
+                const airship = document.createElement('img');
+                airship.src = "https://iili.io/KopRPJs.md.png"; // дирижабль
+                airship.className = "airship";
+            
+                // случайная высота (10vh–60vh)
+                airship.style.top = `${Math.random() * 50 + 10}vh`;
+                // случайная длительность полета (20–40с)
+                airship.style.animationDuration = `${Math.random() * 20 + 20}s`;
+            
+                airshipsContainer.appendChild(airship);
+            
+                // удалить после полета
+                setTimeout(() => airship.remove(), 45000);
+            
+                // запускать снова через 30–70 секунд
+                const delay = Math.random() * 20000 + 20000;
+                timeout = setTimeout(spawnAirship, delay);
+              };
             
               spawnAirship();
             
               return () => clearTimeout(timeout);
             }, []);
+            
 
             
             const handleLogin = async () => {
