@@ -258,35 +258,36 @@
         
         /* щит */
         .ad-board .board {
-            width: 200px;
-            height: 140px;
+            width: 280px;
+            height: 160px;
             background: #fff;
+            border: 3px solid #ccc; /* рамка вокруг всего борда */
             border-radius: 6px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             overflow: hidden;
         }
         
-        /* картинка с обводкой */
+        /* картинка внутри щита */
         .ad-board .board img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border: 3px solid #aaa;   /* серая рамка */
+            border: 2px solid #aaa;   /* серая обводка вокруг картинки */
             border-radius: 4px;
         }
         
-        /* столб (градиент) */
+        /* столб (горизонтальный градиент) */
         .ad-board .pillar {
-            width: 28px;
-            height: 140px;
-            background: linear-gradient(to bottom, #dcdcdc, #a9a9a9);
-            border-radius: 6px;
-            box-shadow: inset 0 0 6px rgba(0,0,0,0.2),
-                        0 2px 6px rgba(0,0,0,0.3);
+            width: 40px;
+            height: 160px;
+            background: linear-gradient(to right, #dcdcdc, #a9a9a9, #dcdcdc);
+            border-radius: 8px;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.3),
+                        0 3px 8px rgba(0,0,0,0.4);
         }
     
         /* --- Шарики разноцветные --- */
@@ -301,6 +302,27 @@
             border-radius: 50% 50% 40% 40% / 70% 70% 30% 30%;
             background: var(--balloon-color, #ff0000); /* цвет по умолчанию */
             z-index: -1;
+        }
+
+        . CSS для дирижабля
+        .airship {
+            position: absolute;
+            top: 0;
+            left: -300px; /* улетает с левой стороны */
+            width: 250px;
+            height: auto;
+            pointer-events: none;
+            opacity: 0.9;
+            animation: fly-airship linear forwards;
+            z-index: 0;
+        }
+        
+        @keyframes fly-airship {
+            0% { transform: translateX(-350px) translateY(0) scale(1); opacity: 0; }
+            10% { opacity: 0.9; }
+            50% { transform: translateX(50vw) translateY(-20px) scale(1.05); opacity: 1; }
+            90% { opacity: 0.9; }
+            100% { transform: translateX(110vw) translateY(0) scale(1); opacity: 0; }
         }
         
         @keyframes fly-up {
@@ -331,7 +353,7 @@
     <div class="clouds"></div>
     <div class="clouds"></div>
     <div class="balloons"></div>
-
+    <div class="airships"></div>
     <div class="ad-board">
       <div class="board">
         <img src="https://iili.io/KobqT5F.th.jpg" alt="Ad Image"/>
@@ -384,6 +406,35 @@
             
               return () => clearTimeout(timeout);
             }, []);
+
+            useEffect(() => {
+              const airshipsContainer = document.querySelector('.airships');
+              let timeout;
+            
+              const spawnAirship = () => {
+                const airship = document.createElement('img');
+                airship.src = "https://iili.io/KopRPJs.md.png";
+                airship.className = "airship";
+                
+                // случайная высота (10vh–60vh)
+                airship.style.top = `${Math.random() * 50 + 10}vh`;
+                // случайная длительность полета (20–40с)
+                airship.style.animationDuration = `${Math.random() * 20 + 20}s`;
+            
+                airshipsContainer.appendChild(airship);
+            
+                setTimeout(() => airship.remove(), 45000); // удалить после полета
+            
+                // следующий запуск через 30–70 секунд
+                const delay = Math.random() * 40000 + 30000;
+                timeout = setTimeout(spawnAirship, delay);
+              };
+            
+              spawnAirship();
+            
+              return () => clearTimeout(timeout);
+            }, []);
+
             
             const handleLogin = async () => {
                 setIsLoggingIn(true);
