@@ -249,19 +249,11 @@
         .ad-board {
             position: fixed;
             bottom: 0;
-            left: 40px; /* отступ от края */
+            left: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
             z-index: 5;
-        }
-        
-        /* ножка */
-        .ad-board .pillar {
-            width: 20px;
-            height: 120px;
-            background: #fff;
-            box-shadow: 0 0 8px rgba(0,0,0,0.2);
         }
         
         /* щит */
@@ -274,14 +266,27 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 5px; /* чтобы щит был над столбом */
+            margin-bottom: 5px;
             overflow: hidden;
         }
         
+        /* картинка с обводкой */
         .ad-board .board img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border: 3px solid #aaa;   /* серая рамка */
+            border-radius: 4px;
+        }
+        
+        /* столб (градиент) */
+        .ad-board .pillar {
+            width: 28px;
+            height: 140px;
+            background: linear-gradient(to bottom, #dcdcdc, #a9a9a9);
+            border-radius: 6px;
+            box-shadow: inset 0 0 6px rgba(0,0,0,0.2),
+                        0 2px 6px rgba(0,0,0,0.3);
         }
     
         /* --- Шарики разноцветные --- */
