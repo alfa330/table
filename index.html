@@ -21,18 +21,17 @@
         
         .container {
           display: flex;
-          justify-content: center; /* центр по горизонтали */
-          align-items: center;     /* центр по вертикали */
-          gap: 32px;               /* расстояние между колонками */
+          justify-content: center;
+          align-items: flex-start;   /* вместо center — теперь сверху */
+          gap: 32px;
           width: 100%;
-          max-width: 1200px;       /* чтобы не растягивалось слишком широко */
-          margin: 0 auto;          /* центрируем сам контейнер в окне */
-          height: 100vh;
+          max-width: 1200px;
+          margin: 40px auto 0;       /* сверху отступ, чтобы поднять контейнер */
           position: relative;
           z-index: 1;
           padding: 20px;
         }
-        
+
         /* 3) колонки — используем flex-basis (гарантия, что суммарно не выйдет за 100%) */
         .column {
           flex: 0 1 calc(50% - 16px); /* половина ширины минус половина gap */
@@ -247,13 +246,14 @@
 
         /* общий контейнер */
         .ad-board {
-            position: fixed;
-            bottom: 0;
-            left: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            z-index: 0;
+          position: fixed;
+          bottom: 40px;              /* чуть выше низа экрана */
+          left: 50%;
+          transform: translateX(-50%); /* центрируем по горизонтали */
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          z-index: 0;
         }
         
         /* щит */
