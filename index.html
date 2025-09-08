@@ -319,6 +319,16 @@
             animation: fly-airship linear forwards;
             z-index: 0;
         }
+
+#fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* не мешает кликам */
+  z-index: -1; /* за таблицей */
+}
         
         @keyframes fly-airship {
             0% { transform: translateX(-350px) translateY(0) scale(1); opacity: 0; }
@@ -352,6 +362,7 @@
 </head>
 <body>
     <div id="root"></div>
+    <canvas id="fireworks"></canvas>
     <div class="clouds"></div>
     <div class="clouds"></div>
     <div class="balloons"></div>
@@ -581,5 +592,80 @@
         };
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
+    <script>
+const canvas = document.getElementById('fireworks');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+class Firework {
+  constructor(x, y, colors) {
+    this.x = x;
+    this.y = y;
+    this.particles = [];
+    this.colors = colors;
+    this.createParticles();
+  }
+  createParticles() {
+    for (let i = 0; i < 100; i++) {
+      const angle = Math.random() * 2 * Math.PI;
+      const speed = Math.random() * 4 + 2;
+      const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+      this.particles.push({
+        x: this.x,
+        y: this.y,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        life: 100,
+        color
+      });
+    }
+  }
+  update() {
+    this.particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05; // гравитация
+      p.life--;
+    });
+    this.particles = this.particles.filter(p => p.life > 0);
+  }
+  draw(ctx) {
+    this.particles.forEach(p => {
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.life / 100;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+  }
+}
+
+let fireworks = [];
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fireworks.forEach(f => {
+    f.update();
+    f.draw(ctx);
+  });
+  fireworks = fireworks.filter(f => f.particles.length > 0);
+  requestAnimationFrame(loop);
+}
+loop();
+
+// запускаем фейерверк каждые 2–4 секунды
+setInterval(() => {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height * 0.5; // верхняя половина экрана
+  const colors = ["#ff4d4d", "#ffcc00", "#66ff66", "#66ccff", "#ff66cc"];
+  fireworks.push(new Firework(x, y, colors));
+}, 2000 + Math.random() * 2000);
+</script>
 </body>
 </html>
