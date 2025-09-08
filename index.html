@@ -245,38 +245,43 @@
           margin-top: -5px;
         }
 
-        .ad-pillar {
+        /* общий контейнер */
+        .ad-board {
             position: fixed;
             bottom: 0;
-            left: 20px;
-            width: 160px;
-            height: 400px;
+            left: 40px; /* отступ от края */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 5;
+        }
+        
+        /* ножка */
+        .ad-board .pillar {
+            width: 20px;
+            height: 120px;
             background: #fff;
-            border-radius: 8px 8px 0 0;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+        
+        /* щит */
+        .ad-board .board {
+            width: 200px;
+            height: 140px;
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            z-index: 5;
+            margin-bottom: 5px; /* чтобы щит был над столбом */
+            overflow: hidden;
         }
-        .ad-pillar img {
+        
+        .ad-board .board img {
             width: 100%;
-            height: auto;
-            border-radius: 6px;
-        }
-    
-        /* --- Новое: надпись сверху --- */
-        .birthday-banner {
-            position: fixed;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 48px;
-            font-weight: bold;
-            color: #fff;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
-            z-index: 10;
+            height: 100%;
+            object-fit: cover;
         }
     
         /* --- Шарики разноцветные --- */
@@ -322,9 +327,13 @@
     <div class="clouds"></div>
     <div class="balloons"></div>
 
-    <div class="ad-pillar">
-      <img src="https://iili.io/KobqT5F.th.jpg" alt="Ad Image"/>
+    <div class="ad-board">
+      <div class="board">
+        <img src="https://iili.io/KobqT5F.th.jpg" alt="Ad Image"/>
+      </div>
+      <div class="pillar"></div>
     </div>
+
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
