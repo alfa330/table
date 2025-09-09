@@ -369,7 +369,7 @@
     <div class="airships"></div>
     <div class="ad-board">
       <div class="board">
-        <img src="https://iili.io/Kx2FUrb.md.png" alt="Ad Image"/>
+        <img src="https://iili.io/KxN4jNn.md.jpg" alt="Ad Image"/>
       </div>
       <div class="pillar"></div>
     </div>
@@ -426,7 +426,7 @@
             
               const spawnAirship = () => {
                 const airship = document.createElement('img');
-                airship.src = "https://iili.io/KopRPJs.md.png"; // дирижабль
+                airship.src = "https://iili.io/KxNDGKg.md.png"; // дирижабль
                 airship.className = "airship";
             
                 // случайная высота (10vh–60vh)
@@ -593,80 +593,82 @@
         ReactDOM.render(<App />, document.getElementById('root'));
     </script>
     <script>
-const canvas = document.getElementById('fireworks');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-window.addEventListener('resize', () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-});
-
-class Firework {
-  constructor(x, y, colors) {
-    this.x = x;
-    this.y = y;
-    this.particles = [];
-    this.colors = colors;
-    this.createParticles();
-  }
-  createParticles() {
-    for (let i = 0; i < 120; i++) {   // больше частиц
-      const angle = Math.random() * 2 * Math.PI;
-      const speed = Math.random() * 5 + 2; // чуть быстрее
-      const color = this.colors[Math.floor(Math.random() * this.colors.length)];
-      this.particles.push({
-        x: this.x,
-        y: this.y,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        life: 120,       // дольше живут
-        color
-      });
-    }
-  }
-  update() {
-    this.particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += 0.04; // гравитация
-      p.life--;
-    });
-    this.particles = this.particles.filter(p => p.life > 0);
-  }
-  draw(ctx) {
-    this.particles.forEach(p => {
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = Math.min(1, p.life / 80); // дольше ярче
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); // точки крупнее
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-  }
-}
-
-let fireworks = [];
-function loop() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  fireworks.forEach(f => {
-    f.update();
-    f.draw(ctx);
-  });
-  fireworks = fireworks.filter(f => f.particles.length > 0);
-  requestAnimationFrame(loop);
-}
-loop();
-
-// запускаем фейерверк каждые 2–4 секунды
-setInterval(() => {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height * 0.5;
-  // более контрастные неоновые цвета
-  const colors = ["#ff0000", "#ffff00", "#00ff00", "#00ccff", "#ff00ff", "#ffffff"];
-  fireworks.push(new Firework(x, y, colors));
-}, 2000 + Math.random() * 2000);
-</script>
+		const canvas = document.getElementById('fireworks');
+		const ctx = canvas.getContext('2d');
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
+		
+		window.addEventListener('resize', () => {
+		  canvas.width = window.innerWidth;
+		  canvas.height = window.innerHeight;
+		});
+		
+		class Firework {
+		  constructor(x, y, colors) {
+		    this.x = x;
+		    this.y = y;
+		    this.particles = [];
+		    this.colors = colors;
+		    this.createParticles();
+		  }
+		  createParticles() {
+		    for (let i = 0; i < 120; i++) {   // больше частиц
+		      const angle = Math.random() * 2 * Math.PI;
+		      const speed = Math.random() * 5 + 2; // чуть быстрее
+		      const color = this.colors[Math.floor(Math.random() * this.colors.length)];
+		      this.particles.push({
+		        x: this.x,
+		        y: this.y,
+		        vx: Math.cos(angle) * speed,
+		        vy: Math.sin(angle) * speed,
+		        life: 120,       // дольше живут
+		        color
+		      });
+		    }
+		  }
+		  update() {
+		    this.particles.forEach(p => {
+		      p.x += p.vx;
+		      p.y += p.vy;
+		      p.vy += 0.04; // гравитация
+		      p.life--;
+		    });
+		    this.particles = this.particles.filter(p => p.life > 0);
+		  }
+		  draw(ctx) {
+		    this.particles.forEach(p => {
+		      ctx.fillStyle = p.color;
+		      ctx.globalAlpha = Math.min(1, p.life / 80); // дольше ярче
+		      ctx.beginPath();
+		      ctx.arc(p.x, p.y, 4, 0, Math.PI * 2); // точки крупнее
+		      ctx.fill();
+		    });
+		    ctx.globalAlpha = 1;
+		  }
+		}
+		
+		let fireworks = [];
+		function loop() {
+		  ctx.clearRect(0, 0, canvas.width, canvas.height);
+		  fireworks.forEach(f => {
+		    f.update();
+		    f.draw(ctx);
+		  });
+		  fireworks = fireworks.filter(f => f.particles.length > 0);
+		  requestAnimationFrame(loop);
+		}
+		loop();
+		
+		// запускаем фейерверк каждые 2–4 секунды
+		let enableFireworks = false; 
+		
+		setInterval(() => {
+		  if (!enableFireworks) return; // проверка
+		  const x = Math.random() * canvas.width;
+		  const y = Math.random() * canvas.height * 0.5;
+		  const colors = ["#ff0000", "#ffff00", "#00ff00", "#00ccff", "#ff00ff", "#ffffff"];
+		  fireworks.push(new Firework(x, y, colors));
+		}, 2000 + Math.random() * 2000);
+	</script>
 </body>
 </html>
